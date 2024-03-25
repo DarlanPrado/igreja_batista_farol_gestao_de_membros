@@ -10,8 +10,16 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@types/yup": "^0.32.0",
     "nuxt": "^3.11.1",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@dargmuesli/nuxt-cookie-control": "^7.5.1",
+    "@nuxt/ui": "^2.14.2",
+    "@nuxtjs/html-validator": "^1.6.0",
+    "@pinia/nuxt": "^0.5.1"
   }
 }
