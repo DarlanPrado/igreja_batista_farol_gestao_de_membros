@@ -8,6 +8,13 @@ export default defineNuxtConfig({
       }
     }
   },
+  runtimeConfig: {
+    dbHost: '',
+    dbDatabase: '',
+    dbuser: '',
+    dbPassword: '',
+    dbPort: ''
+  },
   modules: [
     "@nuxt/ui",
     "@dargmuesli/nuxt-cookie-control",
