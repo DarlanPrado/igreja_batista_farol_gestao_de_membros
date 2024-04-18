@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
-const { $yup, $notification } = useNuxtApp()
+const { $yup, $notification, $http } = useNuxtApp()
 const showPassword = ref(false)
 
 definePageMeta({
@@ -45,8 +45,13 @@ const stateLogin = reactive({
 })
 
 const logar =  async(event: FormSubmitEvent<schemaLogin>) => {
-  // Do something with event.data
-  $notification.warning("Este recurso está em desenvolvimento")
+    // Do something with event.data
+    //   $notification.warning("Este recurso está em desenvolvimento")
+
+    $http.back().post("open/login", {
+        email: event.data.email,
+        senha: event.data.senha
+    });
 }
 
 </script>

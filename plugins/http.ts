@@ -203,29 +203,6 @@ export default defineNuxtPlugin(() => {
                 back(){
                     return httpFetch('/api/')
                 }
-                // back(){
-                //     if(!useRuntimeConfig().public.path_open.includes(useNuxtApp()._route.path)){
-                //         return httpFetch(useRuntimeConfig().public.back_http);
-                //     }
-                //     return httpFetch(useRuntimeConfig().public.back_http);
-                // },
-                // newBack(): newHttpPack{
-                //     // if(!useRuntimeConfig().public.path_open.includes(useNuxtApp()._route.path) && (!useNuxtApp().$session.sessionToken() || useNuxtApp().$session.sessionToken().length <= 0)){
-                //     //     reloadNuxtApp({
-                //     //         path: '/',
-                //     //         force: true,
-                //     //     })
-                //     //     throw createError({statusCode: 401, statusMessage: 'Acesso negado', fatal: true})
-                //     // }
-                //     if(useNuxtApp().$session && useNuxtApp().$session.sessionToken()){
-                //         return newHttpFetch(useRuntimeConfig().public.back_http, useNuxtApp().$session.sessionToken());
-                //     }else{
-                //         return newHttpFetch(useRuntimeConfig().public.back_http);
-                //     }
-                // },
-                // callphone(http: string){
-                //     return httpFetch("http://localhost:9000/api/");
-                // }
             }
         }
     }

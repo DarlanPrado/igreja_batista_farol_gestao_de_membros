@@ -1,7 +1,12 @@
-import Enderecos from "./Enderecos";
-import { DataType } from "sequelize-typescript";
+import { DataType, Model } from "sequelize-typescript";
+import Database from "../utils/conn";
 
-const Bairros = Database()?.define('Bairros', {
+class Bairros extends Model {
+    public id_bairro!: number;
+    public nome!: string;
+}
+
+Bairros.init({
     id_bairro: {
         type: DataType.INTEGER,
         primaryKey: true,
@@ -14,8 +19,28 @@ const Bairros = Database()?.define('Bairros', {
         allowNull: false
     }
 }, {
-    tableName: 'bairros',
+    sequelize: Database,
+    tableName: 'bairros',   
     timestamps: false,
 })
 
-export default Bairros;
+export default Bairros
+
+// const Bairros = Database.define('Bairros', {
+//     id_bairro: {
+//         type: DataType.INTEGER,
+//         primaryKey: true,
+//         autoIncrement: true,
+//         allowNull: false,
+//     },
+//     nome: {
+//         type: DataType.CHAR(50),
+//         unique: true,
+//         allowNull: false
+//     }
+// }, {
+//     tableName: 'bairros',
+//     timestamps: false,
+// })
+
+// export default Bairros;
