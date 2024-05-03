@@ -22,12 +22,4 @@
     </footer>
 </template>
 <script setup lang="ts">
-
-
 </script>
-<style scoped>
-
-/* .content {
-    min-height: calc(100vh - 80px);
-} */
-</style>
