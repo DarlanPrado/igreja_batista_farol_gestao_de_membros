@@ -18,7 +18,9 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/ui",
     "@dargmuesli/nuxt-cookie-control",
-    "@nuxtjs/html-validator"
+    "@nuxtjs/html-validator",
+    "@samk-dev/nuxt-vcalendar",
+    "@pinia/nuxt"
   ],
   // "@pinia/nuxt"
   components: [{
