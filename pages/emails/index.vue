@@ -1,5 +1,5 @@
 <template>
-    <p>homePage</p>
+    <p>emailsPage</p>
 </template>
 <script setup lang="ts">
 
@@ -7,6 +7,6 @@
         layout: 'layout-home'
     });
     useHead({
-        title: 'Inicio'
+        title: 'Emails'
     });
 </script>

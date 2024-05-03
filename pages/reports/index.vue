@@ -1,12 +1,12 @@
 <template>
-    <p>homePage</p>
+    <p>reportsPage</p>
 </template>
 <script setup lang="ts">
 
     definePageMeta({
         layout: 'layout-home'
-    });
+    })
     useHead({
-        title: 'Inicio'
+        title: 'Usuários'
     });
 </script>
