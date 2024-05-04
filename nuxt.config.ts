@@ -22,8 +22,10 @@ export default defineNuxtConfig({
     "@samk-dev/nuxt-vcalendar",
     "@pinia/nuxt"
   ],
-  // "@pinia/nuxt"
   components: [{
     path: '~/components'
-  }]
+  }],
+  pinia: {
+    storesDirs: ["./stores/**"]
+  }
 })
