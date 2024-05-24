@@ -1,9 +1,9 @@
 import connect from "../config/connection.js"
 
-let EstadoCivil ={}
+let Bairro ={}
 const con = await connect()
 
-EstadoCivil.all = async function (req, res) {
+Bairro.all = async function (req, res) {
     try {
         let EstadosCivis = await con.query("SELECT * FROM nome;")
         res.send(EstadosCivis)
