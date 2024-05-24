@@ -5,8 +5,8 @@ const con = await connect()
 
 bairros.all = async function (req, res) {
     try {
-        let bairros = await con.query("SELECT * FROM bairros;")
-        res.send(bairro)
+        let bairrosResultado = await con.query("SELECT * FROM bairros;")
+        res.send(bairrosResultado)
     } catch (e){
         console.log("erro consulta ...", e)
 
@@ -14,9 +14,9 @@ bairros.all = async function (req, res) {
 }
 bairros.create = async function(req, res) {
     try{
-        let bairros = req.body
+        let bairrosReq = req.body
         let sql = "INSERT INTO bairro (bairros_nome) values (?);"
-        let values = [bairros.nome]
+        let values = [bairrosReq.nome]
         let result = await con.query(sql,values)
         res.send({
             status: "Inserção Efetuada com sucesso!",
@@ -32,14 +32,14 @@ bairros.create = async function(req, res) {
 }
 bairros.update = async function(req,res){
     try{
-        let bairros = req.params.id_bairros
+        let id_bairros = req.params.id_bairros
         let bairros_novo = req.body
-        let sql = "UPDATE bairros SET id_bairros=?, "
-        const values = [BairroNovo.novo_bairro,]
+        let sql = "UPDATE bairros SET  bairros_nome = ? WHERE id_bairros=?, "
+        const values = [bairros_novo.nome, id_bairros]
         let result = await con.query(sql, values)
         res.send({
 
-            status: "Atualização do:"+ bairrosNovo.novo_bairro,
+            status: "Atualização do:"+ bairros_novo.nome,
             result: result 
         })
     } catch (e){
@@ -52,12 +52,12 @@ bairros.update = async function(req,res){
 bairros.delete = async function (req, res){
     try {
         
-        let bairros = req.params.id_bairros
-        let sql = "DELETE FROM veiculo WHERE bairros =?;"
-        let result = await con.query(sql,[bairros])
+        let id_bairro = req.params.id_bairros
+        let sql = "DELETE FROM bairros WHERE id_bairro =?;"
+        let result = await con.query(sql,[id_bairro])
         res.send({
 
-            status: "A exclusao do :" + bairros + "foi efetuada",
+            status: "A exclusao do :" + id_bairro + "foi efetuada",
             result: result 
         })
         } catch (e) {
@@ -66,9 +66,9 @@ bairros.delete = async function (req, res){
 bairros.getcodigo = async function (req, res) {
     try {
         let id_bairros = req.params.id_bairros
-        let sql= "SELECT * FROM veiculo WHERE id_bairros=?;"
-        let bairros = await con.query(sql, [id_bairros])
-        res.send(bairros)
+        let sql= "SELECT * FROM bairros WHERE id_bairros=?;"
+        let bairrosResultado = await con.query(sql, [id_bairros])
+        res.send(bairrosResultado)
         
     } catch (e){
         console.log("erro consulta ...", e)
