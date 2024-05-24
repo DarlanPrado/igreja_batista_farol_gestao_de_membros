@@ -32,14 +32,14 @@ EstadoCivil.create = async function(req, res) {
 }
 EstadoCivil.update = async function(req,res){
     try{
-        let estado = req.params.cod_veiculo
-        let estadonovo = req.body
-        let sql = "UPDATE veiculo SET placa_veiculo=?, modelo_veiculo=? , preco_veiculo=? WHERE cod_veiculo=?; "
-        const values = [veiculoNovo.placa_veiculo, veiculoNovo.modelo_veiculo, veiculoNovo.preco_veiculo, veiculo]
+        let Estado = req.params.id_estado_civil
+        let EstadoNovo = req.body
+        let sql = "UPDATE estado SET nome=? WHERE id_estado_civil=?; "
+        const values = [EstadoNovo.nome]
         let result = await con.query(sql, values)
         res.send({
 
-            status: "Atualização do:"+ veiculoNovo.placa_veiculo + veiculoNovo.modelo_veiculo + veiculoNovo.preco_veiculo + veiculo,
+            status: "Atualização do:"+ EstadoNovo.nome,
             result: result 
         })
     } catch (e){
@@ -52,12 +52,12 @@ EstadoCivil.update = async function(req,res){
 EstadoCivil.delete = async function (req, res){
     try {
         
-        let veiculo = req.params.cod_veiculo
-        let sql = "DELETE FROM veiculo WHERE cod_veiculo =?;"
-        let result = await con.query(sql,[veiculo])
+        let Estado = req.params.id_estado_civil
+        let sql = "DELETE FROM estado WHERE id_estado_civil =?;"
+        let result = await con.query(sql,[estado])
         res.send({
 
-            status: "A exclusao do :" + veiculo + "foi efetuada",
+            status: `A exclusao do :${estado} foi efetuada`,
             result: result 
         })
         } catch (e) {
@@ -65,10 +65,10 @@ EstadoCivil.delete = async function (req, res){
 }}
 EstadoCivil.getcodigo = async function (req, res) {
     try {
-        let cod_veiculo = req.params.cod_veiculo
-        let sql= "SELECT * FROM veiculo WHERE cod_veiculo=?;"
-        let veiculo = await con.query(sql, [cod_veiculo])
-        res.send(veiculo)
+        let id_estado_civil = req.params.id_estado_civil
+        let sql= "SELECT * FROM estadocivil WHERE id_estado_civil=?;"
+        let estado = await con.query(sql, [id_estado_civil])
+        res.send(estado)
     } catch (e){
         console.log("erro consulta ...", e)
 
