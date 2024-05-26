@@ -25,7 +25,8 @@
     "@nuxt/ui": "^2.14.2",
     "@nuxtjs/html-validator": "^1.6.0",
     "@pinia/nuxt": "^0.5.1",
-    "@samk-dev/nuxt-vcalendar": "^1.0.3"
+    "@samk-dev/nuxt-vcalendar": "^1.0.3",
+    "prisma": "^5.14.0"
   },
   "overrides": {
     "vue": "latest"
