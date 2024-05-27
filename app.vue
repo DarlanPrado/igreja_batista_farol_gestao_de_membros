@@ -12,8 +12,8 @@
       class: 'bg-stone-300 dark:bg-stone-800'
     },
     titleTemplate: (titleChunk) => {
-      return titleChunk ? `${titleChunk} | Membros` : 'Membros';
-    },
+      return titleChunk ? `${titleChunk} | IBF gestao de membros` : 'IBF gestao de membros';
+    },  
     // link: [
     //   {
     //     rel: 'icon',

@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model bairros {
+  id_bairro Int        @id @default(autoincrement())
+  nome      String     @unique(map: "nome") @db.VarChar(50)
+  enderecos enderecos?
+}
+
+model cidades {
+  id_cidade Int         @id @default(autoincrement())
+  nome      String      @unique(map: "nome") @db.VarChar(50)
+  enderecos enderecos[]
+}
+
+model enderecos {
+  id_endereco       Int                 @id @default(autoincrement())
+  id_cidade         Int
+  id_bairro         Int                 @unique(map: "id_bairro")
+  cidades           cidades             @relation(fields: [id_cidade], references: [id_cidade], onUpdate: Restrict, map: "enderecos_ibfk_1")
+  bairros           bairros             @relation(fields: [id_bairro], references: [id_bairro], onUpdate: Restrict, map: "enderecos_ibfk_2")
+  historico_membros historico_membros[]
+  membros           membros[]
+
+  @@index([id_cidade], map: "id_cidade")
+}
+
+model estado_civil {
+  id_estado_civil   Int                 @id @default(autoincrement())
+  nome              String              @unique(map: "nome") @db.VarChar(50)
+  bl_ativo          Boolean             @default(true)
+  historico_membros historico_membros[]
+  membros           membros[]
+}
+
+model historico_membros {
+  id_historico_membro Int           @id @default(autoincrement())
+  id_usuario          Int?
+  id_membro           Int
+  nome                String        @db.VarChar(100)
+  celular             String?       @db.VarChar(10)
+  data_nascimento     DateTime?     @db.Date
+  id_estado_civil     Int?
+  id_endereco         Int?
+  data_ingresso       DateTime?     @db.Date
+  bl_batizado         Boolean       @default(false)
+  bl_ativo            Boolean       @default(true)
+  updated_at          DateTime      @default(now()) @db.Timestamp(0)
+  descricao           String?       @db.Text
+  usuarios            usuarios?     @relation(fields: [id_usuario], references: [id_usuario], onDelete: Restrict, onUpdate: Restrict, map: "historico_membros_ibfk_1")
+  membros             membros       @relation(fields: [id_membro], references: [id_membro], onUpdate: Restrict, map: "historico_membros_ibfk_2")
+  estado_civil        estado_civil? @relation(fields: [id_estado_civil], references: [id_estado_civil], onDelete: Restrict, onUpdate: Restrict, map: "historico_membros_ibfk_3")
+  enderecos           enderecos?    @relation(fields: [id_endereco], references: [id_endereco], onDelete: Restrict, onUpdate: Restrict, map: "historico_membros_ibfk_4")
+
+  @@index([id_endereco], map: "id_endereco")
+  @@index([id_estado_civil], map: "id_estado_civil")
+  @@index([id_membro], map: "id_membro")
+  @@index([id_usuario], map: "id_usuario")
+}
+
+model membros {
+  id_membro         Int                 @id @default(autoincrement())
+  nome              String              @db.VarChar(100)
+  celular           String?             @db.VarChar(10)
+  data_nascimento   DateTime?           @db.Date
+  id_estado_civil   Int?
+  id_endereco       Int?
+  data_ingresso     DateTime?           @db.Date
+  bl_batizado       Boolean             @default(false)
+  bl_ativo          Boolean             @default(true)
+  historico_membros historico_membros[]
+  estado_civil      estado_civil?       @relation(fields: [id_estado_civil], references: [id_estado_civil], onDelete: Restrict, onUpdate: Restrict, map: "membros_ibfk_1")
+  enderecos         enderecos?          @relation(fields: [id_endereco], references: [id_endereco], onDelete: Restrict, onUpdate: Restrict, map: "membros_ibfk_2")
+
+  @@index([id_endereco], map: "id_endereco")
+  @@index([id_estado_civil], map: "id_estado_civil")
+}
+
+model usuarios {
+  id_usuario        Int                 @id @default(autoincrement())
+  nome              String              @db.VarChar(100)
+  email             String              @unique(map: "email") @db.VarChar(255)
+  senha             String?             @db.Text
+  token             String?             @db.Text
+  bl_admin          Boolean?            @default(false)
+  bl_ativo          Boolean?            @default(true)
+  bl_first_login    Boolean?            @default(true)
+  created_at        DateTime            @default(now()) @db.Timestamp(0)
+  updated_at        DateTime            @default(dbgenerated("'0000-00-00 00:00:00'")) @db.Timestamp(0)
+  historico_membros historico_membros[]
+}

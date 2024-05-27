@@ -1,9 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  nitro: {
-    plugins: ['~/server/models/Usuarios']
-  },
   routeRules: {
     '/': {
       redirect: {
@@ -21,10 +18,14 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/ui",
     "@dargmuesli/nuxt-cookie-control",
-    "@nuxtjs/html-validator"
+    "@nuxtjs/html-validator",
+    "@samk-dev/nuxt-vcalendar",
+    "@pinia/nuxt"
   ],
-  // "@pinia/nuxt"
   components: [{
     path: '~/components'
-  }]
+  }],
+  pinia: {
+    storesDirs: ["./stores/**"]
+  }
 })
