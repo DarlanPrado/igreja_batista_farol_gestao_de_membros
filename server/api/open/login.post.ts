@@ -14,6 +14,7 @@ export default defineEventHandler(async(event) => {
         senha: Yup.string().required()
     });
 
+
     const body = await validateBodyParams(event, bodySchema).catch(e => {
         return response(event, {
             code: 400,
@@ -22,13 +23,6 @@ export default defineEventHandler(async(event) => {
             data: e
         })
     });
-
-    const token = jwt.sign({
-        data: 'foobar'
-    }, "asdoasdhaiudghaisugdui9qw83uisbd987qty1hbe789aghsd9781hg278qhd901j82312", {
-        expiresIn: Math.floor(Date.now() / 1000) + (60 * 60),
-        algorithm: "HS256",
-    })
 
     const userExist = await prisma.usuarios.findFirst({
         where: {
@@ -48,6 +42,16 @@ export default defineEventHandler(async(event) => {
             message: "Usuário ou senha incorretos"
         })
     }
+
+    const token = jwt.sign({
+        data: JSON.stringify({
+            user_id: userExist.id_usuario,
+            date: new Date()
+        })
+    }, useRuntimeConfig().jwt_cript_key, {
+        expiresIn: useRuntimeConfig().jwt_expire,
+        algorithm: "HS256",
+    })
 
     const updatedUser = await prisma.usuarios.update({
         where: {
