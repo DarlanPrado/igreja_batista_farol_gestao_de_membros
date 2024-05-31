@@ -52,11 +52,8 @@ const stateLogin = reactive({
 const logar =  async(event: FormSubmitEvent<schemaLogin>) => {
     // Do something with event.data
     //   $notification.warning("Este recurso está em desenvolvimento")
-
-    $http.back().post("open/login", {
-        email: event.data.email,
-        senha: event.data.senha
-    });
+    
+    await useUserSession().create(event.data.email, event.data.senha);
 }
 
 </script>
