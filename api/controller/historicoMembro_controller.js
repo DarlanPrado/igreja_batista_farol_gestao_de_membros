@@ -1,11 +1,11 @@
 import connect from "../config/connection.js";
 
-let membroIgreja = {};
+let historicoMembro = {};
 const con = await connect();
 
-membroIgreja.all = async function (req, res) {
+historicoMembro.all = async function (req, res) {
     try {
-        let [membros] = await con.query("SELECT * FROM membro;");
+        let [membros] = await con.query("SELECT * FROM historicoMembro;");
         res.send(membros);
     } catch (e) {
         console.log("Erro na consulta ...", e);
@@ -13,11 +13,11 @@ membroIgreja.all = async function (req, res) {
     }
 };
 
-membroIgreja.create = async function(req, res) {
+historicoMembro.create = async function(req, res) {
     try {
-        let { numero, data, bl } = req.body;
-        let sql = "INSERT INTO membro (numero_celular, data_nascimento, data_ingresso, bl_batizado, bl_ativo) VALUES (?, ?, ?, ?, ?);";
-        let values = [numero.celular, data.nascimento, data.ingresso, bl.batizado, bl.ativo];
+        let { celular, dataNascimento, dataIngresso, dtBatizado, descricao } = req.body;
+        let sql = "INSERT INTO historicoMembro (celular, data_nascimento, data_ingresso, dt_batizado, descricao) VALUES (?, ?, ?, ?, ?);";
+        let values = [celular, dataNascimento, dataIngresso, dtBatizado, descricao];
         let [result] = await con.query(sql, values);
         res.send({
             status: "Inserção efetuada com sucesso!",
@@ -29,12 +29,12 @@ membroIgreja.create = async function(req, res) {
     }
 };
 
-membroIgreja.update = async function(req, res) {
+historicoMembro.update = async function(req, res) {
     try {
         let id_membro = req.params.id_membro;
-        let { numero, data, bl } = req.body;
-        let sql = "UPDATE membro SET numero_celular=?, data_nascimento=?, data_ingresso=?, bl_batizado=?, bl_ativo=? WHERE id_membro=?;";
-        let values = [numero.celular, data.nascimento, data.ingresso, bl.batizado, bl.ativo, id_membro];
+        let { celular, dataNascimento, dataIngresso, dtBatizado, descricao } = req.body;
+        let sql = "UPDATE historicoMembro SET celular=?, data_nascimento=?, data_ingresso=?, dt_batizado=?, descricao=? WHERE id_membro=?;";
+        let values = [celular, dataNascimento, dataIngresso, dtBatizado, descricao, id_membro];
         let [result] = await con.query(sql, values);
         res.send({
             status: "Atualização efetuada com sucesso!",
@@ -46,10 +46,10 @@ membroIgreja.update = async function(req, res) {
     }
 };
 
-membroIgreja.delete = async function(req, res) {
+historicoMembro.delete = async function(req, res) {
     try {
         let id_membro = req.params.id_membro;
-        let sql = "DELETE FROM membro WHERE id_membro=?;";
+        let sql = "DELETE FROM historicoMembro WHERE id_membro=?;";
         let [result] = await con.query(sql, [id_membro]);
         res.send({
             status: `A exclusão do membro com ID ${id_membro} foi efetuada com sucesso`,
@@ -61,10 +61,10 @@ membroIgreja.delete = async function(req, res) {
     }
 };
 
-membroIgreja.getmembro = async function(req, res) {
+historicoMembro.getmembro = async function(req, res) {
     try {
         let id_membro = req.params.id_membro;
-        let sql = "SELECT * FROM membro WHERE id_membro=?;";
+        let sql = "SELECT * FROM historicoMembro WHERE id_membro=?;";
         let [membro] = await con.query(sql, [id_membro]);
         res.send(membro);
     } catch (e) {
@@ -73,4 +73,4 @@ membroIgreja.getmembro = async function(req, res) {
     }
 };
 
-export { membroIgreja };
+export { historicoMembro };
