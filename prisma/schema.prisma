@@ -92,6 +92,6 @@ model usuarios {
   bl_ativo          Boolean?            @default(true)
   bl_first_login    Boolean?            @default(true)
   created_at        DateTime            @default(now()) @db.Timestamp(0)
-  updated_at        DateTime            @default(dbgenerated("'0000-00-00 00:00:00'")) @db.Timestamp(0)
+  updated_at        DateTime            @default(now()) @db.Timestamp(0)
   historico_membros historico_membros[]
 }
