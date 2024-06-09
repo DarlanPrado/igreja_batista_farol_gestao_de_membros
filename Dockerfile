@@ -33,6 +33,4 @@ COPY --chown=app:app --from=build_base /usr/src/nuxt-app/.output /app
 COPY --chown=app:app prisma /app/prisma
 
 # Esperar que o servidor MySQL esteja pronto antes de executar o comando Prisma
-CMD ["sh", "-c", "wait-for-it.sh mysql:3306 -- npx prisma db push && npx prisma migrate deploy && node server/index.mjs"]
-
-
+CMD ["sh", "-c", "wait-for-it.sh localhost:3306 -- npx prisma db push && npx prisma migrate deploy && node server/index.mjs"]
