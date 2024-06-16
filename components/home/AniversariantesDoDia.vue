@@ -6,7 +6,7 @@
         <div class="h-48">
             <div v-if="useAniversariantesStore().getAniversariantesByData(props.date).length >= 0">
                 <div v-for="aniversariante in useAniversariantesStore().getAniversariantesByData(props.date)">
-                    <span>aaa{{ aniversariante.name }}</span>
+                    <span>{{ aniversariante.name }}</span>
                 </div>
             </div>  
             <div class="flex justify-center items-center" v-if="useAniversariantesStore().getAniversariantesByData(props.date).length <= 0">
