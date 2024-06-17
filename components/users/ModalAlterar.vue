@@ -8,15 +8,16 @@
             </template>
             <div class="flex flex-col items-center text-center px-16">
                 <h2 class="text-xl mb-5">Alteração de e-mail</h2>
-                <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+                <p>Uma mensagem de confirmação será enviada ao novo e-mail informado.</p>
+                <UForm :schema="schema" :state="state" class="space-y-4 mt-5" @submit="onSubmit">
                     <UFormGroup class="mb-5" name="email">
                         <label class="flex">Novo e-mail:<UInput class="ml-5" v-model="state.email" placeholder="E-mail"/></label>
                     </UFormGroup>
                     <div class="buttons flex justify-center">
-                        <UButton type="submit" size="sm" color="amber" variant="solid" label="Confirmar"/>
+                        <UButton type="submit" size="sm" color="amber" variant="solid" label="Confirmar" @click="notification()"/>
                     </div>
                 </UForm>
-                <p>Uma mensagem de confirmação será enviada ao novo e-mail informado.</p>
+                
             </div>
         </UCard>
     </UModal>
@@ -40,9 +41,14 @@ const state = reactive({
 })
 
 async function onSubmit (event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
-  $notification.success("Enviando...")
   emit('submit')
+}
+
+function notification(){
+    $notification.success("Enviando...")
+    setTimeout(() => {
+        showModal.value = false
+    }, 2500)
 }
 
 </script>
