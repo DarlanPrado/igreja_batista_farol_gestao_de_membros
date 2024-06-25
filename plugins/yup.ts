@@ -87,10 +87,10 @@ Yup.setLocale({
 
 export default defineNuxtPlugin((nuxtApp) => {
   return {
-      name: 'yup-config',
-      parallel: true,
-      provide: {
-        yup: Yup
-      }
+    name: 'yup-config',
+    parallel: true,
+    provide: {
+      yup: Yup
+    }
   }
 });
