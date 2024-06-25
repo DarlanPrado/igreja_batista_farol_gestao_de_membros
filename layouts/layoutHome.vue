@@ -4,8 +4,11 @@
             <div>
                 <h1>logo</h1>
             </div>
-            <div>
+            <div class="flex gap-2">
                 <ColorMode />
+                <UTooltip text="Sair">
+                    <UButton icon="i-heroicons-arrow-right-on-rectangle-solid" @click="useUserSession().close" color="gray" />
+                </UTooltip>
             </div>
         </header>
         <div class="h-full w-full flex">

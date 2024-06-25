@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <HomeAniversariantesDoDia :date="date"/>
+    <div class="mt-14 w-full flex justify-between" >
+        <div>
+            <HomeAniversariantesDoDia :date="date"/>
+        </div>
         <VDatePicker v-model="date" :attributes="attrs" />
     </div>
 </template>
@@ -45,8 +47,6 @@ const findAniversariantes = async() => {
         name: "teste 3",
         data: new Date()
     }]
-
-    console.log("")
     useAniversariantesStore().defineAniversariantes(aniversariantes);
 }
 
