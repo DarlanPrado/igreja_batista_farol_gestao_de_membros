@@ -1,78 +1,65 @@
-import connect from "../config/connection.js"
+import cidadeService from '../Application/Services/cidade_service.js';
 
-let cidades ={}
-const con = await connect()
-
-cidades.all = async function (req, res) {
-    try {
-        let cidadesResultado = await con.query("SELECT * FROM cidades;")
-        res.send(cidadesResultado)
-    } catch (e){
-        console.log("erro consulta ...", e)
-
-    }
-}
-cidades.create = async function(req, res) {
-    try{
-        let cidadesReq = req.body
-        let sql = "INSERT INTO cidade (cidades_nome) values (?);"
-        let values = [cidadesReq.nome]
-        let result = await con.query(sql,values)
-        res.send({
-            status: "Inserção Efetuada com sucesso!",
-            result: result
- 
- 
-        })
-    } catch (e) {
-        console.log("Erro......", e)
- 
-    }
- 
-}
-cidades.update = async function(req,res){
-    try{
-        let id_cidades = req.params.id_cidades
-        let cidades_novo = req.body
-        let sql = "UPDATE cidades SET  cidades_nome = ? WHERE id_cidades=?, "
-        const values = [cidades_novo.nome, id_cidades]
-        let result = await con.query(sql, values)
-        res.send({
-
-            status: "Atualização do:"+ cidades_novo.nome,
-            result: result 
-        })
-    } catch (e){
-        console.log("Erro.....", e)
-    }
-
-
-
-}
-cidades.delete = async function (req, res){
-    try {
-        
-        let id_cidade = req.params.id_cidades
-        let sql = "DELETE FROM cidades WHERE id_cidade =?;"
-        let result = await con.query(sql,[id_cidade])
-        res.send({
-
-            status: "A exclusao do :" + id_cidade + "foi efetuada",
-            result: result 
-        })
+const cidadeController = {
+    async all(req, res) {
+        try {
+            const cidades = await cidadeService.getAllCidades();
+            res.send(cidades);
         } catch (e) {
-            console.log(e)
-}}
-cidades.getcodigo = async function (req, res) {
-    try {
-        let id_cidades = req.params.id_cidades
-        let sql= "SELECT * FROM cidades WHERE id_cidades=?;"
-        let cidadessResultado = await con.query(sql, [id_cidades])
-        res.send(cidadesResultado)
-        
-    } catch (e){
-        console.log("erro consulta ...", e)
+            console.log("Erro na consulta ...", e);
+            res.status(400).send({ error: "Erro ao buscar cidades." });
+        }
+    },
 
+    async create(req, res) {
+        try {
+            const cidade = await cidadeService.createCidade(req.body);
+            res.send({
+                status: "Inserção Efetuada com sucesso!",
+                result: cidade
+            });
+        } catch (e) {
+            console.log("Erro na inserção ...", e);
+            res.status(400).send({ error: "Erro ao criar cidade." });
+        }
+    },
+
+    async update(req, res) {
+        try {
+            const cidade = await cidadeService.updateCidade(req.params.id_cidade, req.body);
+            res.send({
+                status: "Atualização efetuada com sucesso!",
+                result: cidade
+            });
+        } catch (e) {
+            console.log("Erro na atualização ...", e);
+            res.status(400).send({ error: "Erro ao atualizar cidade." });
+        }
+    },
+
+    async delete(req, res) {
+        try {
+            const cidade = await cidadeService.deleteCidade(req.params.id_cidade);
+            res.send({
+                status: "Exclusão efetuada com sucesso!",
+                result: cidade
+            });
+        } catch (e) {
+            console.log("Erro na exclusão ...", e);
+            res.status(400).send({ error: "Erro ao excluir cidade." });
+        }
+    },
+
+    async getcodigo(req, res) {
+        try {
+            const cidade = await cidadeService.getCidadeById(req.params.id_cidade);
+            res.send(cidade);
+        } catch (e) {
+            console.log("Erro na consulta ...", e);
+            res.status(400).send({ error: "Erro ao buscar cidade." });
+        }
     }
-}
-export {cidades} 
+};
+
+
+export default cidadeController;
