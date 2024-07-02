@@ -1,16 +1,17 @@
 <template>
-    <div>
-        <UsersModalOpenInfo v-model="openInfo" />
-        
+    <div class="w-full mt-14">
         <UsersModalIsOpenCad v-model="isOpenCad" @submit="createUs" />
-
-        <div class="table h-1/2 w-1/2 items-center mt-10 border-2 dark:border-gray-400 border-gray-800 rounded-2xl">
-            <UTable :columns="columns" :rows="people" @click="openInfo = true"/>
-            
-            <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+        <UCard>
+            <template #header>
+                <div class="w-1/4 m-4 flex justify-start">
+                    <UInput v-model="searchInput" placeholder="Buscar. . ." />
+                </div>
+            </template>
+            <UsersModalTableUser v-model:search="searchInput"/>
+            <!-- <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
                 <UPagination v-model="page" :page-count="pageCount" :total="people.length" />
-            </div>
-        </div>
+            </div> -->
+        </UCard>
         <div class="flex justify-center my-10">
             <UButton size="sm" color="amber" variant="solid" label="Novo cadastro" :trailing="false" @click="isOpenCad = true"/>
         </div>
@@ -20,6 +21,13 @@
 <script setup lang="ts">
 import { object, string, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
+import { useUsuarioStore } from '~/stores/usuarios';
+import { ref, onMounted } from 'vue'
+import UsersModalIsOpenCad from '~/components/users/ModalIsOpenCad.vue';
+import UsersModalTableUser from '~/components/users/ModalTableUser.vue';
+
+const searchInput = ref('')
+const isOpenCad = ref(false)
 
 const schema = object({
   email: string().email('E-mail inválido').required('Por favor, insira um e-mail válido!'),
@@ -48,45 +56,39 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
     definePageMeta({
         layout: 'layout-home'
     })
-
-    const columns = [
-        {key: 'id', label: 'Nº'},
-        {key: 'name', label: 'Nome'},
-        {key: 'email', label: 'E-mail'},
-        {key: 'type', label: 'Usuário'},
-        {key: 'edit'}
-    ]
-
-    const people = [{
-        id: 1,
-        name: 'nome',
-        email: 'cdk.adfd@gmail.com',
-        type: 'adm'
-    }]
-    const page = ref(1)
-    const pageCount = 5
-
-    const rows = computed(() => {
-        return people.slice((page.value - 1) * pageCount, (page.value) * pageCount)
-    })
-
-    const openInfo = ref(false)
-    const isOpenCad = ref(false)
+    
+    
     const isOpenPassword = ref(false)
-    
-
-    const creatUs = useToast()
-    const confEm = useToast()
-    const confA = useToast()
-    const delUs = useToast()
-
-    
 
     function createUs () {
         isOpenPassword.value = true
     }
 
-    
+    onMounted(() => {
+    findUsuarios();
+    })
 
+    const findUsuarios = () => {
+      useUsuarioStore().defineUsuarios([{
+        id: 1,
+        nome: "user 1",
+        email: "adm@gmail.com",
+        tipo: "admin",
+        senha: "senha"
+      },{
+        id: 2,
+        nome: "user 2",
+        email: "padrao@gmail.com",
+        tipo: "padrao",
+        senha: "senha"
+      },{
+        id:3,
+        nome:'user 3',
+        email:'user@gamil.com',
+        tipo: 'padrao',
+        senha: 'senha'
+      }
+    ])
+    }
 
 </script>

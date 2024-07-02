@@ -25,6 +25,7 @@
 <script setup lang="ts">
 import { type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
+import { ref, reactive } from 'vue'
 const { $yup, $notification } = useNuxtApp();
 
 const emit = defineEmits(["submit"])
@@ -37,11 +38,17 @@ const schema = $yup.object({
 type Schema = InferType<typeof schema>
 
 const state = reactive({
-    email: undefined,
+    email: '',
 })
 
 async function onSubmit (event: FormSubmitEvent<Schema>) {
-  emit('submit')
+    try {
+        await schema.validate(state, { abortEarly: false })
+        emit('submit', state)
+        notification()
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 function notification(){
