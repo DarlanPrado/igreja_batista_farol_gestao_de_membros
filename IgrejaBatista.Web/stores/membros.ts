@@ -15,17 +15,17 @@ export const useMembroStore = defineStore('membros', {
     getters: {
         getAllMembros: (state): Membro[] => {
             return state.membros.map(membro => ({
-                id: membro.id,
+                id_membro: membro.id_membro,
                 nome: membro.nome,
                 data_nascimento: membro.data_nascimento,
                 bl_ativo: membro.bl_ativo
             }));
         },
-        getMembroDataById: (state) => (idMembro: MembroData["id"]) => state.membros.find(membro => membro.id == idMembro),
+        getMembroDataById: (state) => (idMembro: MembroData["id_membro"]) => state.membros.find(membro => membro.id_membro == idMembro),
         getEnderecos: (state) => state.enderecos,
         getEnderecoById: (state) => (idEnderecos: Endereco["id_endereco"]) => state.enderecos.find(enderecos => enderecos.id_endereco = idEnderecos),
-        getCidades: (state) => state.enderecos.map(endereco => endereco.cidade),
-        getBairroByIdCidade: (state) => (idCidade: Endereco["cidade"]["id"]) => state.enderecos.filter(endereco => endereco.cidade.id == idCidade)?.map(endereco => endereco.bairro),
+        getCidades: (state) => ['Joinville'],
+        getBairroByIdCidade: (state) => ['Anita Garibaldi', 'Comasa'],
     },
     actions: {
         defineMembros(membros: MembroData[]){

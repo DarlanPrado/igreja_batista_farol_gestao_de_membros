@@ -25,9 +25,6 @@ const showModal = defineModel({required: true});
 
 function notification(){
     $notification.success("Criando usuário")
-    setTimeout(() => {
-        window.location.reload()
-    }, 2500)
 }
 
 const senhaGerada = ref<string>('')

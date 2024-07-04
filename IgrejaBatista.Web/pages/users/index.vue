@@ -25,6 +25,7 @@ import { useUsuarioStore } from '~/stores/usuarios';
 import { ref, onMounted } from 'vue'
 import UsersModalIsOpenCad from '~/components/users/ModalIsOpenCad.vue';
 import UsersModalTableUser from '~/components/users/ModalTableUser.vue';
+const { $http } = useNuxtApp()
 
 const searchInput = ref('')
 const isOpenCad = ref(false)
@@ -68,27 +69,11 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
     findUsuarios();
     })
 
-    const findUsuarios = () => {
-      useUsuarioStore().defineUsuarios([{
-        id: 1,
-        nome: "user 1",
-        email: "adm@gmail.com",
-        tipo: "admin",
-        senha: "senha"
-      },{
-        id: 2,
-        nome: "user 2",
-        email: "padrao@gmail.com",
-        tipo: "padrao",
-        senha: "senha"
-      },{
-        id:3,
-        nome:'user 3',
-        email:'user@gamil.com',
-        tipo: 'padrao',
-        senha: 'senha'
-      }
-    ])
+    const findUsuarios = () => {    
+      $http.back().get('usuarios').then((res) => {
+        console.log(res)
+        useUsuarioStore().defineUsuarios(res)
+      })
     }
 
 </script>

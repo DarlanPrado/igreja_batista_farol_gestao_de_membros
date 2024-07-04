@@ -4,16 +4,16 @@ export default defineNuxtRouteMiddleware((to, from) => {
         return
     }
 
-    if(!useUserSession().sessionCookie.value){
+    // if(!useUserSession().sessionCookie.value){
 
-        useUserSession().close();
-        //Necessário correção no plugin notification, para ser possivel chamar no lado servidor
-        if(import.meta.client){
-            useNuxtApp().$notification.warning("Sessão expirada", "logue novamente para continuar");
-        }
-        return navigateTo({
-            path: "/",
-            force: true,
-        });
-    }
+    //     useUserSession().close();
+    //     //Necessário correção no plugin notification, para ser possivel chamar no lado servidor
+    //     if(import.meta.client){
+    //         useNuxtApp().$notification.warning("Sessão expirada", "logue novamente para continuar");
+    //     }
+    //     return navigateTo({
+    //         path: "/",
+    //         force: true,
+    //     });
+    // }
 });

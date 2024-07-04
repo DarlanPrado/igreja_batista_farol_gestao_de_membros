@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     jwt_expire: "",
     public: {
       cookie_expire: "",
-      open_path: "",
+      open_path: ""
     }
   },
   $development: {
@@ -31,7 +31,8 @@ export default defineNuxtConfig({
     "@dargmuesli/nuxt-cookie-control",
     "@nuxtjs/html-validator",
     "@samk-dev/nuxt-vcalendar",
-    "@pinia/nuxt"
+    "@pinia/nuxt",
+    "nuxt-laravel-precognition"
   ],
   components: [{
     path: '~/components'

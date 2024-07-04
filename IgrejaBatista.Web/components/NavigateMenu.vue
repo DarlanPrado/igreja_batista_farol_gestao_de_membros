@@ -22,11 +22,7 @@ const links = [{
     icon: 'i-heroicons-users-solid',
     to: '/users'
 },{
-    label: 'E-mails',
-    icon: 'i-heroicons-envelope-solid',
-    to: '/emails'
-},{
-    label: 'Relaórios',
+    label: 'Relatórios',
     icon: 'i-heroicons-clipboard-document-list-solid',
     to: '/reports'
 }]

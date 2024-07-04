@@ -14,7 +14,7 @@
                         <UInput v-model="state.nome" autofocus />
                     </UFormGroup>
                     <UFormGroup name="telefone" label="Telefone">
-                        <UInput v-model="state.telefone" />
+                        <UInput v-model="state.celular" />
                     </UFormGroup>
                     <div class="grid grid-cols-2 gap-2">
                         <UFormGroup name="data_nascimento" label="Data nascimento">
@@ -26,10 +26,10 @@
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <UFormGroup name="cidade" label="Cidade">
-                            <UInputMenu v-model="state.cidade" :options="useMembroStore().getCidades" valueAttribute="id" optionAttribute="nome"/>
+                            <UInputMenu v-model="state.cidade" :options="[{ id: 1, nome: 'Joinville' }]" valueAttribute="id" optionAttribute="nome" />
                         </UFormGroup>
                         <UFormGroup name="bairro" label="Bairro">
-                            <UInputMenu v-model="state.bairro" :options="useMembroStore().getBairroByIdCidade(state.cidade || 0)" valueAttribute="id" optionAttribute="nome" :disabled="!state.cidade" />
+                            <UInputMenu v-model="state.bairro" :options="[{ id: 1, nome: 'Anita Garibaldi' } , { id: 2, nome: 'Comasa'} ]" valueAttribute="id" optionAttribute="nome" :disabled="!state.cidade" />
                         </UFormGroup>
                     </div>
                     <div class="grid grid-cols-2 gap-2">                        
@@ -51,17 +51,18 @@
 <script setup lang="ts">
 import { type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
-const { $yup, $notification } = useNuxtApp();
+const { $yup, $notification, $http } = useNuxtApp();
 const form = ref();
 const showModal = defineModel({required: true});
 
 const schema = $yup.object({
     nome: $yup.string().required(),
     data_nascimento: $yup.date(),
-    estado_civil: $yup.string(),
-    telefone: $yup.string(),
-    cidade: $yup.string(),
-    bairro: $yup.string(),
+    id_estado_civil: $yup.number(),
+    celular: $yup.string(),
+    id_endereco: $yup.number(),
+    cidade: $yup.number(),
+    bairro: $yup.number(),
     data_ingresso: $yup.date(),
     bl_batizado: $yup.boolean().required(),
     bl_ativo: $yup.boolean().required(),
@@ -70,10 +71,12 @@ const schema = $yup.object({
 type Schema = InferType<typeof schema>
 
 const state = reactive({
+    id_usuario: 1,
     nome: "",
     data_nascimento: undefined,
-    Estado_civil: undefined,
-    telefone: "",
+    id_estado_civil: 1,
+    celular: "",
+    id_endereco: 0,
     cidade: undefined,
     bairro: undefined,
     data_ingresso: undefined,
@@ -82,25 +85,33 @@ const state = reactive({
 })
 
 async function onSubmit (event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
+    if (state.bairro == 1){
+        state.id_endereco = 1
+    } else {
+        state.id_endereco = 2
+    }
+
+  console.log(state)
+
+  $http.back().post('membros', state).then(() => {})
   $notification.success("Enviando...")
   showModal.value = false;
 }
 
 const blBatizadoOptions = [{
     label: "Sim",
-    value: true,
+    value: 1,
 },{
     label: "Não",
-    value: false,
+    value: 0,
 }];
 
 const statusOptions = [{
     label: "Habilitado",
-    value: true,
+    value: 1,
 },{
     label: "Desabilitado",
-    value: false,
+    value: 0,
 }];
 
 const resetForm = () => {

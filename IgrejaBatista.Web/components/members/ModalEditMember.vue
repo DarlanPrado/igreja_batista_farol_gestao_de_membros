@@ -14,7 +14,7 @@
                         <UInput v-model="state.nome" />
                     </UFormGroup>
                     <UFormGroup name="telefone" label="Telefone">
-                        <UInput v-model="state.telefone" />
+                        <UInput v-model="state.celular" />
                     </UFormGroup>
                     <div class="grid grid-cols-2 gap-2">
                         <UFormGroup name="data_nascimento" label="Data nascimento">
@@ -26,10 +26,10 @@
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <UFormGroup name="cidade" label="Cidade">
-                            <UInputMenu v-model="state.cidade" :options="useMembroStore().getCidades" valueAttribute="id" optionAttribute="nome" />
+                            <UInputMenu v-model="state.cidade" :options="[{ id: 1, nome: 'Joinville' }]" valueAttribute="id" optionAttribute="nome" />
                         </UFormGroup>
                         <UFormGroup name="bairro" label="Bairro">
-                            <UInputMenu v-model="state.bairro" :options="useMembroStore().getBairroByIdCidade(state.cidade || 0)" valueAttribute="id" optionAttribute="nome" :disabled="!state.cidade" />
+                            <UInputMenu v-model="state.bairro" :options="[{ id: 1, nome: 'Anita Garibaldi' } , { id: 2, nome: 'Comasa'} ]" valueAttribute="id" optionAttribute="nome" :disabled="!state.cidade" />
                         </UFormGroup>
                     </div>
                     <div class="grid grid-cols-2 gap-2">                        
@@ -52,7 +52,7 @@
 import { type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
 import type { MembroData } from '~/types/stores/membros';
-const { $yup, $notification } = useNuxtApp();
+const { $yup, $notification, $http } = useNuxtApp();
 const membro: Ref<MembroData | undefined> = ref();
 const form = ref();
 const showModal = defineModel({required: true});
@@ -65,7 +65,7 @@ const props = defineProps<Props>();
 
 (() => {
     membro.value = useMembroStore().getMembroDataById(props.idMembro);
-    if(!membro.value?.id){
+    if(!membro.value?.id_membro){
         $notification.warning("Membro não encontrado")
         showModal.value = false;
         return;
@@ -76,10 +76,11 @@ const props = defineProps<Props>();
 const schema = $yup.object({
     nome: $yup.string().required(),
     data_nascimento: $yup.date(),
-    estado_civil: $yup.string(),
-    telefone: $yup.string(),
-    cidade: $yup.string(),
-    bairro: $yup.string(),
+    id_estado_civil: $yup.string(),
+    celular: $yup.string(),
+    id_endereco: $yup.number(),
+    cidade: $yup.number(),
+    bairro: $yup.number(),
     data_ingresso: $yup.date(),
     bl_batizado: $yup.boolean().required(),
     bl_ativo: $yup.boolean().required(),
@@ -88,19 +89,26 @@ const schema = $yup.object({
 type Schema = InferType<typeof schema>
 
 const state = reactive({
-    nome: membro.value?.nome,
-    data_nascimento: membro.value?.data_nascimento,
-    Estado_civil: membro.value?.id_estado_civil,
-    telefone: membro.value?.celular,
-    cidade: useMembroStore().getEnderecoById(membro.value?.id_endereco || 0)?.cidade.id,
-    bairro: useMembroStore().getEnderecoById(membro.value?.id_endereco || 0)?.bairro.id,
-    data_ingresso: membro.value?.data_ingresso,
-    bl_batizado: membro.value?.bl_batizado,
-    bl_ativo: membro.value?.bl_ativo,
+    nome: "",
+    data_nascimento: undefined,
+    id_estado_civil: 1,
+    celular: "",
+    id_endereco: 0,
+    cidade: 0,
+    bairro: 0,
+    data_ingresso: undefined,
+    bl_batizado: false,
+    bl_ativo: true,
 })
 
 async function onSubmit (event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
+    if (state.bairro == 1){
+        state.id_endereco = 1
+    } else {
+        state.id_endereco = 2
+    }
+
+  $http.back().put('membros/' + props.idMembro, state).then(() => {})
   $notification.success("Enviando...")
 }
 

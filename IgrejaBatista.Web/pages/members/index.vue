@@ -22,6 +22,8 @@
 <script setup lang="ts">
 const searchInput = ref();
 const showModalCreatemMember = ref(false);
+const { $http } = useNuxtApp()
+
 onMounted(() => {
     findMembers();
     findEnderecos();
@@ -37,32 +39,11 @@ useHead({
 
 
 const findMembers = () => {
-    useMembroStore().defineMembros([{
-        id: 1,
-        nome: "membro 1",
-        celular: "123123123123",
-        data_nascimento: new Date(),
-        id_estado_civil: 1,
-        id_endereco: 1,
-        data_ingresso: new Date(),
-        bl_batizado: true,
-        bl_ativo: true,
-    },{
-        id: 2,
-        nome: "membro 2",
-        bl_batizado: false,
-        bl_ativo: false,
-    },{
-        id: 3,
-        nome: "membro 3",
-        bl_batizado: true,
-        bl_ativo: true,
-    },{
-        id: 4,
-        nome: "membro 4",
-        bl_batizado: true,
-        bl_ativo: true,
-    }])
+    $http.back().get('membros').then((res) => {
+        console.log(res)
+        useMembroStore().defineMembros(res)
+    })
+
 }
 
 const findEnderecos = () => {

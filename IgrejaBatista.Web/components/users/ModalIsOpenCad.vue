@@ -17,7 +17,7 @@
                             <label class="flex justify-between mb-5">E-mail:<UInput class="w-2/3" v-model="state.email" placeholder="E-mail"/></label>
                         </UFormGroup>
                         <UFormGroup class="mb-5" name="tipo">
-                            <URadioGroup v-model="state.tipo" :options="radioOptions" />
+                            <URadioGroup v-model="state.bl_admin" :options="radioOptions" />
                         </UFormGroup>
                         <div class="flex justify-end mr-5">
                             <UButton type="submit" size="sm" color="amber" variant="solid" label="Criar" :trailing="false" @click="notification()"/>
@@ -42,21 +42,23 @@ const form = ref()
 
 const userSchema = $yup.object({
     email: $yup.string().email().required(),
-    password: $yup.string().min(8, 'A senha deve conter no mínimo 8 caracteres!').required('Por favor, insira uma senha válida!').required(),
+    senha: $yup.string(),
     nome: $yup.string().required('Por favor, insira um nome!')
     .test('is-full-name', 'Por favor, insira um nome completo!', (value: any) => {
       return value && value.trim().split(' ').length > 1;
     }),
-    tipo: $yup.string().required('Por favor, selecione um tipo de usuário!')
+    bl_admin: $yup.number().required('Por favor, selecione um tipo de usuário!'),
+    bl_ativo: $yup.number()
 })
 
 type UserSchema = InferType<typeof userSchema>
 
 const state = reactive<UserSchema>({
-    email: '',
-    password: '',
-    nome: '',
-    tipo: ''
+    email: undefined,
+    senha: undefined,
+    nome: undefined,
+    bl_admin: undefined,
+    bl_ativo: 1
 })
 
 async function onSubmit (event: FormSubmitEvent<UserSchema>) {
@@ -85,8 +87,8 @@ function closeAll (){
 
 
 const radioOptions = [
-    { label: 'Usuário administrador', value: 'admin' || 'adm', help: 'Tem todos os direitos: cadastrar, excluir, etc.' },
-    { label: 'Usuário padrão', value: 'padrao' || 'padrão', help: 'Não pode excluir cadastros e nem criar ou editar usuários.' }
+    { label: 'Usuário administrador', value: 1 || 'adm', help: 'Tem todos os direitos: cadastrar, excluir, etc.' },
+    { label: 'Usuário padrão', value: 0 || 'padrão', help: 'Não pode excluir cadastros e nem criar ou editar usuários.' }
 ];
 
 

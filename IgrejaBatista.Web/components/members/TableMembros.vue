@@ -31,7 +31,7 @@
         </UCard>
     </div> -->
     <div>
-        <MembersModalEditMember v-if="showModalEditMember" v-model="showModalEditMember" :id-membro="idMemberSelected"/>
+        <MembersModalEditMember v-if="showModalEditMember" v-model="showModalEditMember" :idMembro="idMemberSelected"/>
         <UTable :columns="columns" :rows="filteredRows" >
             <template #bl_ativo-data="{ row }">
                 <UBadge v-if="row.bl_ativo" label="Habilitado" color="green"/>
@@ -103,7 +103,7 @@ const items = (row: Membro) => [
   [{
     label: 'Editar',
     icon: 'i-heroicons-pencil-square-20-solid',
-    click: () => { idMemberSelected.value = row.id, showModalEditMember.value = true }
+    click: () => { idMemberSelected.value = row.id_membro, showModalEditMember.value = true }
   }], dinamicAlterStatus(row.bl_ativo),
 ]
 

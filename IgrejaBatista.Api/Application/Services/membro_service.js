@@ -8,14 +8,17 @@ const membroService = {
 
     async createMembro(membroData) {
         let membro = await Membro.create({
-            numero_celular: membroData.numero_celular,
+            nome: membroData.nome,
+            id_endereco: membroData.id_endereco,
+            celular: membroData.celular,
+            id_estado_civil: membroData.id_estado_civil,
             data_nascimento: membroData.data_nascimento,
             data_ingresso: membroData.data_ingresso,
             bl_batizado: membroData.bl_batizado,
             bl_ativo: membroData.bl_ativo
         });
 
-        await historicoMembroService.createHistoricoMembro(membro.assign(membroData))
+        await historicoMembroService.createHistoricoMembro(Object.assign(membro, membroData))
 
         return membro
     },
@@ -23,8 +26,10 @@ const membroService = {
     async updateMembro(id_membro, membroData) {
         const membro = await Membro.findByPk(id_membro);
         if (membro) {
-            membro.numero_celular = membroData.numero_celular;
-            membro.data_nascimento = membroData.data_nascimento;
+            membro.nome = membroData.nome;
+            membro.id_endereco = membroData.id_endereco;
+            membro.celular = membroData.celular;
+            membro.id_estado_civil = membroData.id_estado_civil;
             membro.data_ingresso = membroData.data_ingresso;
             membro.bl_batizado = membroData.bl_batizado;
             membro.bl_ativo = membroData.bl_ativo;

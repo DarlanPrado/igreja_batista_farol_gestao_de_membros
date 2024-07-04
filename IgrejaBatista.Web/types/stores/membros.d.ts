@@ -15,13 +15,13 @@ export interface Endereco {
 }
 
 export interface EstadoCivil {
-    id: number,
+    id_estado_civil: number,
     nome: string,
     bl_ativo: boolean
 }
 
 export interface MembroData {
-    id: number,
+    id_membro: number,
     nome: string,
     celular?: string | undefined,
     data_nascimento?: Date | undefined,
@@ -33,7 +33,7 @@ export interface MembroData {
 }
 
 export interface Membro {
-    id: MembroData["id"],
+    id_membro: MembroData["id_membro"],
     nome: MembroData["nome"],
     data_nascimento: MembroData["data_nascimento"],
     bl_ativo: MembroData["bl_ativo"]

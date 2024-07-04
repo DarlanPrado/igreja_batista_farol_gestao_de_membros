@@ -32,7 +32,18 @@ function objectToQueryString(obj: Record<string, any>): string {
   return keyValuePairs.join('&');
 }
 
-const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>  {
+function getToken() {
+    try{
+        let stringUserData = localStorage.getItem("USERDATA")
+        let userData = JSON.parse(stringUserData)
+    
+        return userData ? userData.token : ''
+    } catch(e) {
+        console.log(e)
+    }
+  }
+
+const httpFetch = (api_http: string): HttpPack =>  {
     return {
         async post(url: string, data?: any, additionalHeaders?: { [key: string]: string }, allowUnauthorized?: boolean): Promise<HttpData> {
             let response = {
@@ -40,6 +51,18 @@ const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>
                 body: {} as HttpData,
             };
 
+            let headers={}
+            if (allowUnauthorized){  
+                headers = {
+                    ...additionalHeaders
+                }
+            } else{
+                
+                headers = {
+                    'x-access-token': getToken() || '',
+                    ...additionalHeaders
+                }
+            }
             try {
                 await $fetch(`${api_http}${url}`, {
                     method: "post",
@@ -50,11 +73,10 @@ const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>
                     retryDelay: 1000,
                     retryStatusCodes: [400, 425, 429, 500, 502, 503],
                     
-                    headers: {
-                        'Authorization': authorizationDefault || '',
-                        ...additionalHeaders
-                    },
+                    headers: headers,
                     onResponse(res){
+                        console.log(res)
+                        debugger
                         if(!allowUnauthorized && res.response.status == 401){
                             throw createError({statusCode: 401, statusMessage: 'Acesso negado', fatal: true})
                         }
@@ -63,12 +85,10 @@ const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>
                     },
                 })
 
-                if(!response.body.code || !response.body.status || !response.body.message){
+                if(!response){
                     throw createError({statusCode: 500, message: 'Ocorreu um erro inesperado, tente novamente mais tarde', fatal: true, data: response.body})
                 }
-                if(response.status != response.body.code){
-                    throw createError({statusCode: 409, message: 'O status informado no pacote não é mesmo retornado na requisição'})
-                }
+
             } catch (error: any) {
                 throw new Error('Ocorreu um erro ao tentar fazer a requisição')
             }
@@ -92,7 +112,7 @@ const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>
                     retryStatusCodes: [400, 425, 429, 500, 502, 503],
                     
                     headers: {
-                        'Authorization': authorizationDefault || '',
+                        'x-access-token': getToken() || '',
                         ...additionalHeaders
                     },
                     onResponse(res){
@@ -104,11 +124,8 @@ const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>
                     },
                 })
 
-                if(!response.body.code || !response.body.status || !response.body.message){
+                if(!response){
                     throw createError({statusCode: 500, message: 'Ocorreu um erro inesperado, tente novamente mais tarde', fatal: true, data: response.body})
-                }
-                if(response.status != response.body.code){
-                    throw createError({statusCode: 409, message: 'O status informado no pacote não é mesmo retornado na requisição'})
                 }
             } catch (error: any) {
                 throw new Error('Ocorreu um erro ao tentar fazer a requisição')
@@ -128,7 +145,7 @@ const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>
                     body: data || null,
                     ignoreResponseError: true,
                     headers: {
-                        'Authorization': authorizationDefault || '',
+                        'x-access-token': getToken() || '',
                         ...additionalHeaders
                     },
                     onResponse(res){
@@ -140,11 +157,8 @@ const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>
                     },
                 })
 
-                if(!response.body.code || !response.body.status || !response.body.message){
-                    throw createError({statusCode: 500, message: 'Ocorreu um erro inesperado, tente novamente mais tarde', fatal: true})
-                }
-                if(response.status != response.body.code){
-                    throw createError({statusCode: 409, message: 'O status informado no pacote não é mesmo retornado na requisição'})
+                if(!response){
+                    throw createError({statusCode: 500, message: 'Ocorreu um erro inesperado, tente novamente mais tarde', fatal: true, data: response.body})
                 }
             } catch (error: any) {
                 throw new Error('Ocorreu um erro ao tentar fazer a requisição')
@@ -169,7 +183,7 @@ const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>
                     retryStatusCodes: [400, 425, 429, 500, 502, 503],
                     
                     headers: {
-                        'Authorization': authorizationDefault || '',
+                        'x-access-token': getToken() || '',
                         ...additionalHeaders
                     },
                     onResponse(res){
@@ -181,13 +195,11 @@ const httpFetch = (api_http: string, authorizationDefault?: string): HttpPack =>
                     },
                 })
 
-                if(!response.body.code || !response.body.status || !response.body.message){
+                if(!response){
                     throw createError({statusCode: 500, message: 'Ocorreu um erro inesperado, tente novamente mais tarde', fatal: true, data: response.body})
                 }
-                if(response.status != response.body.code){
-                    throw createError({statusCode: 409, message: 'O status informado no pacote não é mesmo retornado na requisição'})
-                }
             } catch (error: any) {
+                console.log(error)
                 throw new Error('Ocorreu um erro ao tentar fazer a requisição')
             }
 
@@ -201,7 +213,7 @@ export default defineNuxtPlugin(() => {
         provide: {
             http: {
                 back(){
-                    return httpFetch('/api/')
+                    return httpFetch('http://localhost:52225/api/')
                 }
             }
         }

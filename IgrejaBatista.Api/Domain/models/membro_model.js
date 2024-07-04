@@ -7,6 +7,10 @@ const Membro = sequelize.define('Membro', {
         autoIncrement: true,
         primaryKey: true
     },
+    nome: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     celular: {
         type: DataTypes.STRING,
         allowNull: false
