@@ -1,5 +1,6 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-    if(useRuntimeConfig().public.open_path.split(",").some(pathOpen => pathOpen == to.path)){
+    
+    if(!to.name || useRuntimeConfig().public.open_path.split(",").some(pathOpen => pathOpen == to.path)){
         return
     }
 
