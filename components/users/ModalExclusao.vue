@@ -4,13 +4,13 @@
             <div class="flex flex-col items-center text-center px-16">
                 <h2 class="text-xl mb-5">Excluir usuário</h2>
                 <p>Digite a sua senha para confirmar a exclusão do cadastro.</p>
-                <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+                <UForm :schema="schema" :state="state" class="space-y-4 flex flex-col items-center" @submit="onSubmit">
                     <UFormGroup name="password">
-                        <UInput class="mt-5" v-model="state.password" type="password" placeholder="Senha"/>
+                        <UInput class="my-5" v-model="state.password" type="password" placeholder="Senha"/>
                     </UFormGroup>
-                    <div class="buttons flex justify-around mx-24">
-                        <UButton size="sm" color="amber" variant="solid" label="Cancelar" @click="emit('cancel')"/>
-                        <UButton type="submit" size="sm" color="amber" variant="solid" label="Confirmar"/>
+                    <div class="buttons flex flex-row">
+                        <UButton class="mx-5"size="sm" color="amber" variant="solid" label="Cancelar" @click="emit('cancel')"/>
+                        <UButton class="mx-5" type="submit" size="sm" color="amber" variant="solid" label="Confirmar" @click="notification()"/>
                     </div>
                 </UForm>
             </div>
@@ -35,10 +35,15 @@ const state = reactive({
   password: undefined,
 })
 
-async function onSubmit (event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
-  $notification.success("Excluindo usuário")
+async function onSubmit (event: FormSubmitEvent<Schema>){
   emit('submit')
+}
+
+function notification(){
+    $notification.warning("Excluindo usuário")
+    setTimeout(() => {
+        window.location.reload()
+    }, 2500)
 }
 
 </script>

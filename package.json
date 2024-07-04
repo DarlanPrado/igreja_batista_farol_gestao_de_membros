@@ -13,6 +13,7 @@
     "@prisma/client": "5.14.0",
     "@types/yup": "^0.32.0",
     "jsonwebtoken": "^9.0.2",
+    "jspdf": "^2.5.1",
     "nuxt": "^3.11.2",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
