@@ -93,7 +93,9 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
 
   console.log(state)
 
-  $http.back().post('membros', state).then(() => {})
+  $http.back().post('membros', state).then(() => {
+    window.location.reload()
+  })
   $notification.success("Enviando...")
   showModal.value = false;
 }

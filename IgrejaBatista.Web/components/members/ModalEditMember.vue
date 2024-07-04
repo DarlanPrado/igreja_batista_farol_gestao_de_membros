@@ -108,7 +108,9 @@ async function onSubmit (event: FormSubmitEvent<Schema>) {
         state.id_endereco = 2
     }
 
-  $http.back().put('membros/' + props.idMembro, state).then(() => {})
+  $http.back().put('membros/' + props.idMembro, state).then(() => {
+    window.location.reload()
+  })
   $notification.success("Enviando...")
 }
 

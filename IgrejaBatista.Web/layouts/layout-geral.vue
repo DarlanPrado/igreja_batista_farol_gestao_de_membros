@@ -1,7 +1,7 @@
 <template>
     <div class="bory flex flex-col min-h-screen">
         <header class="nav-bar bg-white flex justify-between items-center py-3 px-8">
-            <!-- <img class="logo" src="/images/logo.jpeg" alt="Logo Igreja Batista Farol Joinville" width="250" height="50"> -->
+            <img class="logo" src="./images/logo.jpg" alt="Logo Igreja Batista Farol Joinville" width="250" height="50">
             <a class="exit flex items-center " href="/pages/login/index.vue">
                 <span class="txt-exit text-xl ml-1 mr-2 text-gray-900">Sair</span>
                 <img src="https://api.iconify.design/bitcoin-icons:exit-filled.svg" width="55" alt="Ícone de saída">

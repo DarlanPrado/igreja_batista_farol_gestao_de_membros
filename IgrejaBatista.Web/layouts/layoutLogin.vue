@@ -4,7 +4,7 @@
             <div class="hidden md:block">
             </div>
             <div class="flex justify-center items-center">
-                <h1>Logo</h1>
+            <img class="logo" src="./images/logo.jpg" alt="Logo Igreja Batista Farol Joinville" width="250" height="50">
             </div>
             <div class="flex justify-end items-center">
                 <ColorMode />
