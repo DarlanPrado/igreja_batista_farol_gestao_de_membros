@@ -85,6 +85,4 @@ Yup.setLocale({
   }
 });
 
-const $yup = Yup
-
-export default $yup;
+export default Yup;

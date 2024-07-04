@@ -1,9 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  nitro: {
-    plugins: ['~/server/models/Usuarios']
-  },
   routeRules: {
     '/': {
       redirect: {
@@ -12,19 +9,34 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    dbHost: '',
-    dbDatabase: '',
-    dbuser: '',
-    dbPassword: '',
-    dbPort: ''
+    jwt_cript_key: "",
+    jwt_expire: "",
+    public: {
+      cookie_expire: "",
+      open_path: "",
+    }
+  },
+  $development: {
+    runtimeConfig: {
+      jwt_cript_key: "development",
+      jwt_expire: "18800000",
+      public: {
+        open_path: "/,/login",
+        cookie_expire: "18800000"
+      }
+    }
   },
   modules: [
     "@nuxt/ui",
     "@dargmuesli/nuxt-cookie-control",
-    "@nuxtjs/html-validator"
+    "@nuxtjs/html-validator",
+    "@samk-dev/nuxt-vcalendar",
+    "@pinia/nuxt"
   ],
-  // "@pinia/nuxt"
   components: [{
     path: '~/components'
-  }]
+  }],
+  pinia: {
+    storesDirs: ["./stores/**"]
+  }
 })
