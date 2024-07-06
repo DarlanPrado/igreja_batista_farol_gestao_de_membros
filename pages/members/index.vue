@@ -1,5 +1,6 @@
 <template>
     <div class="w-full mt-14">
+        <MembersModalEndereco v-model="showModalEndereco" search/>
         <MembersModalCreateMember v-model="showModalCreatemMember" />
         <UCard>
             <template #header>
@@ -7,7 +8,10 @@
                     <div>
                         <UInput v-model="searchInput" placeholder="Buscar..." />
                     </div>
-                    <div>
+                    <div class="flex gap-20">
+                        <UTooltip text="Cadastrar endereços">
+                            <UButton @click="showModalEndereco = true" label="Endereços" />
+                        </UTooltip>
                         <UTooltip text="Adicionar membro">
                             <UButton @click="showModalCreatemMember = true" icon="i-heroicons-plus-solid" />
                         </UTooltip>
@@ -22,6 +26,7 @@
 <script setup lang="ts">
 const searchInput = ref();
 const showModalCreatemMember = ref(false);
+const showModalEndereco = ref(false);
 onMounted(() => {
     findMembers();
     findEnderecos();
