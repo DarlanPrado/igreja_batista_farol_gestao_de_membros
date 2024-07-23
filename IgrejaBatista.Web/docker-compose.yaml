@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: ibf_database
+    environment:
+      MYSQL_ROOT_PASSWORD: h198da1qjbhjiks8iq219ha
+      MYSQL_DATABASE: ibf_database
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - ibf_system
+  # nuxt-app:
+  #   build: ./
+  #   container_name: ibf_app
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - mysql
+  #   # environment:
+  #   #   DATABASE_URL: mysql://root:h198da1qjbhjiks8iq219ha@localhost:3306/ibf_database
+  #   #   PUBLIC_NUXT_OPEN_PATH: /,/login
+  #   #   NUXT_JWT_CRIPT_KEY: asdoasdhaiudghaisugdui9qw83uisbd987qty1hbe789aghsd9781hg278qhd901j82312
+  #   #   NUXT_JWT_EXPIRE: 14400000
+  #   #   PUBLIC_NUXT_COOKIE_EXPIRE: 14400000
+  #   # command: sh -c "npx prisma db push"
+  #   networks:
+  #     - ibf_system
+
+networks:
+  ibf_system:
+    driver: bridge
+
+volumes:
+  mysql_data:
